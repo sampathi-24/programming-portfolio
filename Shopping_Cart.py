@@ -200,3 +200,207 @@ kids = [
 ]
 
 cart = ShoppingCart()
+
+
+# ================= MAIN MENU =================
+
+print("Welcome To Online Shopping")
+
+while True:
+
+    print("\n1.Electronics")
+    print("2.Clothing")
+    print("3.View Cart")
+    print("4.Exit")
+
+    choice = input("\nEnter Your Choice: ")
+
+    # ================= ELECTRONICS =================
+
+    if choice == "1":
+
+        print("\nElectronics:")
+
+        for item in electronics:
+            item.display_product()
+
+        while True:
+
+            pid = input(
+                "\nEnter Product ID / Type 'back' to exit: "
+            )
+
+            if pid.lower() == "back":
+                break
+
+            found = False
+
+            for product in electronics:
+
+                if str(product.product_id) == pid:
+
+                    qty = int(input("Enter Quantity: "))
+
+                    cart.add_product(product, qty)
+
+                    found = True
+                    break
+
+            if not found:
+                print("Invalid Product ID")
+
+    # ================= CLOTHING =================
+
+    elif choice == "2":
+
+        while True:
+
+            print("\nClothing:")
+            print("1.Mens")
+            print("2.Womens")
+            print("3.Kids")
+            print("4.Exit")
+
+            c = input("Enter Your Choice: ")
+
+            if c == "1":
+
+                print("\nMen's Section:")
+
+                for item in mens:
+                    item.display_product()
+
+                while True:
+
+                    pid = input(
+                        "\nEnter Product ID / Type 'back' to exit: "
+                    )
+
+                    if pid.lower() == "back":
+                        break
+
+                    for product in mens:
+
+                        if str(product.product_id) == pid:
+
+                            qty = int(input("Enter Quantity: "))
+
+                            cart.add_product(product, qty)
+
+                            break
+
+            elif c == "2":
+
+                print("\nWomen's Section:")
+
+                for item in womens:
+                    item.display_product()
+
+                while True:
+
+                    pid = input(
+                        "\nEnter Product ID / Type 'back' to exit: "
+                    )
+
+                    if pid.lower() == "back":
+                        break
+
+                    for product in womens:
+
+                        if str(product.product_id) == pid:
+
+                            qty = int(input("Enter Quantity: "))
+
+                            cart.add_product(product, qty)
+
+                            break
+
+            elif c == "3":
+
+                print("\nKids Section:")
+
+                for item in kids:
+                    item.display_product()
+
+                while True:
+
+                    pid = input(
+                        "\nEnter Product ID / Type 'back' to exit: "
+                    )
+
+                    if pid.lower() == "back":
+                        break
+
+                    for product in kids:
+
+                        if str(product.product_id) == pid:
+
+                            qty = int(input("Enter Quantity: "))
+
+                            cart.add_product(product, qty)
+
+                            break
+
+            elif c == "4":
+                break
+
+    # ================= VIEW CART =================
+
+    elif choice == "3":
+
+        cart.display_cart()
+
+        print("\n1.Pay")
+        print("2.Back")
+
+        pay_choice = input(
+            "\nEnter Your Choice To Pay / Click Back: "
+        )
+
+        if pay_choice == "1":
+
+            amount = cart.apply_all_discounts()
+
+            print(f"\nTotal Amount: {amount:.0f}")
+
+            print("\n1.UPI")
+            print("2.CreditCard")
+            print("3.Cash")
+
+            payment = input("\nEnter Your Choice To Pay: ")
+
+            if payment == "1":
+
+                upi = input("Enter UPI ID: ")
+                pin = input("Enter PIN: ")
+
+                print("\nThank You For Payment")
+
+            elif payment == "2":
+
+                card = input("Enter Card Number: ")
+
+                print("\nThank You For Payment")
+
+            elif payment == "3":
+
+                print("\nCash Payment Successful")
+
+    # ================= EXIT =================
+
+    elif choice == "4":
+
+        print("\nThank You Shopping With Us. Visit Again!")
+        break
+
+    else:
+        print("Invalid Choice")
+
+
+# Demonstration of class method
+print("\nTotal Products Created:",
+      Product.get_total_products())
+
+# Demonstration of static method
+print("GST On 1000:",
+      Product.calculate_gst(1000))
