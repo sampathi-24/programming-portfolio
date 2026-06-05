@@ -90,3 +90,87 @@ class Clothing(Product):
         if self.get_price() > 3000:
             return 20
         return 10
+    
+# ================= SHOPPING CART =================
+
+class ShoppingCart:
+
+    def __init__(self):
+        self.cart = []
+
+    # Aggregation
+    def add_product(self, product, qty):
+        self.cart.append((product, qty))
+        print(f"{qty} products are added to cart")
+
+    def remove_product(self, product_id):
+
+        for item in self.cart:
+            product, qty = item
+
+            if product.product_id == product_id:
+                self.cart.remove(item)
+                print("Product removed")
+                return
+
+    def display_cart(self):
+
+        if not self.cart:
+            print("Cart is Empty")
+            return
+
+        print("-" * 66)
+        print("product  product   Price Quantity Total   Discount  After_Discount")
+        print("_id      _name                     _price  Applied       Price")
+        print("-" * 66)
+
+        grand_total = 0
+
+        for product, qty in self.cart:
+
+            total_price = product.get_price() * qty
+
+            discount_percent = product.calculate_discount()
+
+            discount_amount = total_price * discount_percent / 100
+
+            grand_total += (total_price - discount_amount)
+
+            print(
+                f"{product.product_id:<8}"
+                f"{product.name:<10}"
+                f"{product.get_price():<8}"
+                f"{qty:<8}"
+                f"{total_price:<10}"
+                f"{str(discount_percent)+'%':<10}"
+                f"{discount_amount:.0f}"
+            )
+
+        return grand_total
+
+    def calculate_total(self):
+
+        total = 0
+
+        for product, qty in self.cart:
+            total += product.get_price() * qty
+
+        return total
+
+    def apply_all_discounts(self):
+
+        final_total = 0
+
+        for product, qty in self.cart:
+
+            total = product.get_price() * qty
+
+            discount = total * product.calculate_discount() / 100
+
+            final_total += (total - discount)
+
+        return final_total
+
+    # Operator Overloading
+    def __add__(self, other):
+        return self.calculate_total() + other.calculate_total()
