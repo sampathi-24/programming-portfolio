@@ -49,3 +49,44 @@ class Product(ABC):
     @abstractmethod
     def calculate_discount(self):
         pass
+    
+    # ================= ELECTRONICS =================
+
+class Electronics(Product):
+
+    def __init__(self, product_id, name, price, quantity,
+                 brand, warranty_years):
+        super().__init__(product_id, name, price, quantity)
+
+        self.brand = brand
+        self.warranty_years = warranty_years
+
+    def display_product(self):
+        print(f"{self.product_id}.{self.name}({self.brand})-{self.get_price()}")
+
+    def calculate_discount(self):
+        if self.get_price() > 50000:
+            return 15
+        return 5
+
+
+# ================= CLOTHING =================
+
+class Clothing(Product):
+
+    def __init__(self, product_id, name, price,
+                 quantity, category, size, fabric_type):
+
+        super().__init__(product_id, name, price, quantity)
+
+        self.category = category
+        self.size = size
+        self.fabric_type = fabric_type
+
+    def display_product(self):
+        print(f"{self.product_id}:{self.name}({self.size})-{self.get_price()}")
+
+    def calculate_discount(self):
+        if self.get_price() > 3000:
+            return 20
+        return 10
