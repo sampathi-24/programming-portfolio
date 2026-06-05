@@ -174,3 +174,29 @@ class ShoppingCart:
     # Operator Overloading
     def __add__(self, other):
         return self.calculate_total() + other.calculate_total()
+
+
+# ================= PRODUCTS =================
+
+electronics = [
+    Electronics(121, "laptop", 50000, 1, "dell", 2),
+    Electronics(212, "Mobile", 15000, 1, "vivo", 1),
+    Electronics(332, "charger", 6000, 1, "samsung", 1)
+]
+
+mens = [
+    Clothing(123, "shirt", 5000, 1, "Mens", "L", "Cotton"),
+    Clothing(232, "pant", 6000, 1, "Mens", "L", "Denim")
+]
+
+womens = [
+    Clothing(341, "kurti", 3500, 1, "Womens", "M", "Rayon"),
+    Clothing(452, "saree", 7000, 1, "Womens", "Free Size", "Silk")
+]
+
+kids = [
+    Clothing(561, "T-Shirt", 1500, 1, "Kids", "S", "Cotton"),
+    Clothing(672, "Shorts", 1200, 1, "Kids", "S", "Polyester")
+]
+
+cart = ShoppingCart()
