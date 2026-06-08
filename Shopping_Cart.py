@@ -49,8 +49,9 @@ class Product(ABC):
     @abstractmethod
     def calculate_discount(self):
         pass
-    
-    # ================= ELECTRONICS =================
+
+
+# ================= ELECTRONICS =================
 
 class Electronics(Product):
 
@@ -90,7 +91,8 @@ class Clothing(Product):
         if self.get_price() > 3000:
             return 20
         return 10
-    
+
+
 # ================= SHOPPING CART =================
 
 class ShoppingCart:
@@ -112,6 +114,23 @@ class ShoppingCart:
                 self.cart.remove(item)
                 print("Product removed")
                 return
+        print("Product not found")
+                
+    def update_quantity(self, product_id, qty):
+
+        for i, (product, old_qty) in enumerate(self.cart):
+    
+            if product.product_id == product_id:
+    
+                if qty <= 0:
+                    self.cart.pop(i)
+                    print("Product removed from cart")
+                else:
+                    self.cart[i] = (product, qty)
+                    print("Quantity updated")
+    
+                return
+        print("Product not found in cart")
 
     def display_cart(self):
 
@@ -210,8 +229,9 @@ while True:
 
     print("\n1.Electronics")
     print("2.Clothing")
-    print("3.View Cart")
-    print("4.Exit")
+    print("3.Remove Products")
+    print("4.View Cart")
+    print("5.Exit")
 
     choice = input("\nEnter Your Choice: ")
 
@@ -240,7 +260,10 @@ while True:
                 if str(product.product_id) == pid:
 
                     qty = int(input("Enter Quantity: "))
-
+                    if qty <=0 :
+                        print("Quantity must be greater than 0")
+                        continue
+                    
                     cart.add_product(product, qty)
 
                     found = True
@@ -284,6 +307,9 @@ while True:
                         if str(product.product_id) == pid:
 
                             qty = int(input("Enter Quantity: "))
+                            if qty <= 0:
+                                print("Quantity must be greater than 0")
+                                continue
 
                             cart.add_product(product, qty)
 
@@ -310,6 +336,9 @@ while True:
                         if str(product.product_id) == pid:
 
                             qty = int(input("Enter Quantity: "))
+                            if qty <= 0:
+                                print("Quantity must be greater than 0")
+                                continue
 
                             cart.add_product(product, qty)
 
@@ -336,6 +365,9 @@ while True:
                         if str(product.product_id) == pid:
 
                             qty = int(input("Enter Quantity: "))
+                            if qty <=0:
+                                print("Quantity must be greater than 0")
+                                continue
 
                             cart.add_product(product, qty)
 
@@ -343,52 +375,111 @@ while True:
 
             elif c == "4":
                 break
+    # --------------Remove products-----------
+    elif choice == "3":
+        
+
+        cart.display_cart()
+    
+        print("\n1.Remove Product")
+        print("2.Increase or Decrease Quantity")
+    
+        remove_choice = input("Enter Choice: ")
+    
+        if remove_choice == "1":
+    
+            product_id = int(input("Enter Product ID: "))
+            cart.remove_product(product_id)
+    
+        elif remove_choice == "2":
+    
+            product_id = int(input("Enter Product ID: "))
+            qty = int(input("Enter New Quantity: "))
+    
+            cart.update_quantity(product_id, qty)
+            
+        
 
     # ================= VIEW CART =================
 
-    elif choice == "3":
+    elif choice == "4":
 
         cart.display_cart()
 
         print("\n1.Pay")
         print("2.Back")
-
         pay_choice = input(
-            "\nEnter Your Choice To Pay / Click Back: "
-        )
-
+                "\nEnter Your Choice To Pay / Click Back: "
+            )
         if pay_choice == "1":
+    
+                amount = cart.apply_all_discounts()
+    
+                print(f"\nTotal Amount: {amount:.0f}")
+    
+                print("\n1.UPI")
+                print("2.CreditCard")
+                print("3.Cash")
+    
+                payment = input("\nEnter Your Choice To Pay: ")
+                if payment == "1":
+                        while True:
+                        
+        
+                            upi = input("Enter UPI ID: ")
+                            pin = input("Enter 4-digit PIN: ")
+                            if (
+                                upi.startswith("@ibl")
+                                and len(upi) > 4
+                                and upi[4:].isalnum()
+                                and pin.isdigit()
+                                and len(pin) == 4
+                            ):
+                                print("\nPayment Successful using UPI")
+                                print("Thank You For Payment")
+                                cart.cart.clear()
+                                break
+                            else:
+                                print("\nInvalid UPI ID or PIN")
+                elif payment == "2":
+                        while True:
+                        
+                                card = input("Enter 12-digit Card Number: ")
+                                cvv = input("Enter 3-digit CVV: ")
+                        
+                                if (
+                                    card.isdigit()
+                                    and len(card) == 12
+                                    and cvv.isdigit()
+                                    and len(cvv) == 3
+                                ):
+                        
+                                    print("\nPayment Successful using Card")
+                                    print("Thank You For Payment")
+                                    cart.cart.clear()
+                                    break
+                        
+                                else:
+                                    print("\nInvalid Card Number or CVV")
+                                    print("Please try again")
+        
+                elif payment == "3":
+                    print("\nCash Payment Successful")
+                    print("Thank You For Payment")
+                    cart.cart.clear()
+                    break
+                else:
+                    print("Invalid choice to pay")
 
-            amount = cart.apply_all_discounts()
+                
 
-            print(f"\nTotal Amount: {amount:.0f}")
 
-            print("\n1.UPI")
-            print("2.CreditCard")
-            print("3.Cash")
-
-            payment = input("\nEnter Your Choice To Pay: ")
-
-            if payment == "1":
-
-                upi = input("Enter UPI ID: ")
-                pin = input("Enter PIN: ")
-
-                print("\nThank You For Payment")
-
-            elif payment == "2":
-
-                card = input("Enter Card Number: ")
-
-                print("\nThank You For Payment")
-
-            elif payment == "3":
-
-                print("\nCash Payment Successful")
+    
+        
 
     # ================= EXIT =================
 
-    elif choice == "4":
+    elif choice == "5":
 
         print("\nThank You Shopping With Us. Visit Again!")
         break
